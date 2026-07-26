@@ -75,13 +75,13 @@ que uma leitura de `0 g` abra indevidamente um pedido de reposição.
 |---|---|
 | Sensor sem resposta ou peso `<= 0 g` | Emite uma vez o alerta de caixa ausente/erro de calibração |
 | Peso entre `1 g` e `200 g` | Abre uma única solicitação de reposição |
-| Reposição pendente e peso abaixo de `4950 g` | Mantém a solicitação aberta, sem duplicar mensagens |
-| Reposição pendente e peso `>= 4950 g` | Confirma o abastecimento e encerra a solicitação |
+| Reposição pendente e peso abaixo de `5000 g` | Mantém a solicitação aberta, sem duplicar mensagens |
+| Reposição pendente e peso `>= 5000 g` | Confirma o abastecimento e encerra a solicitação |
 | Sem reposição pendente e peso acima de `200 g` | Publica o estoque regular a cada 500 ms |
 
-O limite de caixa cheia aceita uma tolerância de 1% em relação aos `5000 g`
-nominais. Isso evita que uma pequena oscilação impeça a conclusão do ciclo, sem
-confundir uma reposição parcial com uma caixa cheia.
+O ciclo só é concluído quando a leitura atinge os `5000 g` definidos pelo
+desafio como o patamar de caixa cheia. Enquanto esse valor não é alcançado, uma
+solicitação de reposição permanece pendente e não gera mensagens duplicadas.
 
 Duas informações independentes representam o estado do processo:
 

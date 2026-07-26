@@ -14,7 +14,7 @@ SENSOR_FAULT_MESSAGE = "ALERTA: Caixa ausente ou erro de calibração no sensor 
 REGULAR_STATUS_TEMPLATE = "Status: Estoque Regular ({}g)"
 
 CRITICAL_WEIGHT_MAX_G = 200
-FULL_WEIGHT_MIN_G = 4950
+FULL_WEIGHT_MIN_G = 5000
 REGULAR_STATUS_INTERVAL_MS = 500
 
 
