@@ -1,8 +1,8 @@
-"""Driver MicroPython mínimo e não bloqueante para o conversor HX711."""
+"""Leitura do conversor HX711 em MicroPython."""
 
-from machine import Pin, disable_irq, enable_irq
 from time import sleep_us
 
+from machine import Pin, disable_irq, enable_irq
 
 READING_BITS = 24
 SIGN_BIT = 0x800000
@@ -19,7 +19,7 @@ class HX711:
         self._clock.off()
 
     def read_raw_if_ready(self):
-        """Retorna uma amostra assinada ou ``None`` enquanto o ADC está ocupado."""
+        """Retorna a leitura ou ``None`` se o conversor ainda estiver ocupado."""
         if self._data.value() != 0:
             return None
 

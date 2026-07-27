@@ -1,8 +1,9 @@
-"""Regras de negócio do monitor de estoque Kanban."""
+"""Regras do monitor de estoque Kanban."""
 
 try:
     from time import ticks_diff
-except ImportError:  # Permite testar a lógica também no Python convencional.
+except ImportError:  # Também permite testar este arquivo no Python comum.
+
     def ticks_diff(current, previous):
         return current - previous
 
@@ -19,7 +20,7 @@ REGULAR_STATUS_INTERVAL_MS = 500
 
 
 class KanbanMonitor:
-    """Controla eventos de estoque, reposição e falha do sensor."""
+    """Controla o estoque, a reposição e as falhas do sensor."""
 
     def __init__(self, emit=print):
         self._emit = emit
@@ -28,7 +29,7 @@ class KanbanMonitor:
         self._last_regular_status_ms = None
 
     def process(self, weight_grams, now_ms):
-        """Processa uma amostra já convertida para gramas."""
+        """Processa uma leitura já convertida para gramas."""
         if weight_grams is None or weight_grams <= 0:
             self._handle_sensor_fault()
             return
@@ -48,21 +49,21 @@ class KanbanMonitor:
         self._report_regular_status(weight_grams, now_ms)
 
     def _handle_sensor_fault(self):
-        """Emite a anomalia uma vez por ocorrência, sem apagar uma reposição."""
+        """Mostra a falha uma vez sem cancelar um pedido existente."""
         if not self._sensor_fault_active:
             self._emit(SENSOR_FAULT_MESSAGE)
             self._sensor_fault_active = True
             self._last_regular_status_ms = None
 
     def _handle_pending_replenishment(self, weight_grams):
-        """Conclui o ciclo somente quando a caixa retorna ao patamar cheio."""
+        """Fecha o pedido quando a caixa volta ao peso cheio."""
         if weight_grams >= FULL_WEIGHT_MIN_G:
             self._emit(REFILL_COMPLETE_MESSAGE)
             self._replenishment_pending = False
             self._last_regular_status_ms = None
 
     def _report_regular_status(self, weight_grams, now_ms):
-        """Publica telemetria periódica enquanto o estoque permanece seguro."""
+        """Mostra o peso periodicamente enquanto o estoque está regular."""
         first_report = self._last_regular_status_ms is None
         report_due = (
             not first_report
